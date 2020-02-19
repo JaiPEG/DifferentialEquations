@@ -1,0 +1,5 @@
+This project includes routines to solve differential equations, namely the
+scalar wave equation in 1 + 1 dimensions.
+
+It is submitted as the second assignment for the 2020 Computational Physics
+course at Perimeter Institute.
