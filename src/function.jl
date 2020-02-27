@@ -26,6 +26,10 @@ struct Hat{R, a, b, n}
 	coeffs::Vector{R}
 end
 
+function Base.:(==)(f::Hat{R, a, b, n}, g::Hat{R, a, b, n})::Bool where {R, a, b, n}
+	f.coeffs == g.coeffs
+end
+
 #
 # Vector space
 #
