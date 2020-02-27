@@ -106,7 +106,7 @@ Evaluate a function in the hat basis representation at a point x between a and
 b.
 """
 function eval(f::Hat{R, a, b, n}, x::R)::R where {R, a, b, n}
-	sum(f.coeffs[i + 1] * hat(n, i, x) for i in 0:(n - 1))
+	sum(f.coeffs[i + 1] * hat(a, b, n, i, x) for i in 0:(n - 1))
 end
 
 #
