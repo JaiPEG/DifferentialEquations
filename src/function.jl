@@ -42,7 +42,7 @@ function Base.:-(f::Hat{R, a, b, n}, g::Hat{R, a, b, n})::Hat{R, a, b, n} where 
 	Hat{R, a, b, n}(f.coeffs - g.coeffs)
 end
 
-function Base.:*(c::R, g::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
+function Base.:*(c::R, f::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
 	Hat{R, a, b, n}(c * f.coeffs)
 end
 
