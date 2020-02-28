@@ -289,6 +289,14 @@ end
 # Miscellaneous
 #
 
+function bounds(f::Hat{R, a, b, n})::Tuple{Int, Int} where {R, a, b, n}
+	(a, b)
+end
+
+function samples(f::Hat{R, a, b, n})::Int where {R, a, b, n}
+	n
+end
+
 function concat(f::Hat{R, a, b, m}, g::Hat{R, b, c, n})::Hat{R, a, c, m + n - 1} where {R, a, b, c, m, n}
 	# TODO: floating point error
 	if f.coeffs[m] != g.coeffs[1]
