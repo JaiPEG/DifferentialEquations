@@ -54,8 +54,8 @@ end
 Sample a function [a, b] -> R at n points uniformly spaced between a and b.
 """
 function sampleUniform(a::R, b::R, n::Int, f)::Vector{R} where {R}
-	h = R(1) / (n - 1)
-	[f(h * i) for i in 0:(n - 1)]
+	h = (b - a) / (n - 1)
+	[f(a + h * i) for i in 0:(n - 1)]
 end
 
 """
