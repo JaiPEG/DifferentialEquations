@@ -1,3 +1,5 @@
+include("util.jl")
+
 # Define data structures and algorithms for representing and manipulating
 # functions.
 
@@ -127,6 +129,94 @@ function quad(f::Hat{R, a, b, n})::R where {R, a, b, n}
 		s += w * h * f.coeffs[i + 1]
 	end
 	s
+end
+
+"""
+Compute the quadrature (numerical integration) for a function in the hat basis
+representation over the given interval.
+"""
+function quad(f::Hat{R, a, b, n}, x1::R, x2::R)::R where {R, a, b, n}
+	# Bound too far left
+	if x1 < a
+		throw(DomainError(x1, "Quadrature bound out of bounds."))
+	# Bound too far right
+	elseif x2 > b
+		throw(DomainError(x2, "Quadrature bound out of bounds."))
+	# Bounds switched
+	elseif x1 > x2
+		-quad(f, x2, x1)
+	else
+		# println("Bounds: ", x1, " ", x2)
+		h = (b - a) / (n - 1)
+		s = R(0)
+
+		function trap(height, base1, base2)
+			0.5*height*(base1 + base2)
+		end
+
+		# Map into sample range
+		y1 = mapRange(a, b, 1.0, R(n), x1)
+		y2 = mapRange(a, b, 1.0, R(n), x2)
+		# println("Sample r: ", y1, " ", y2, " ")
+
+		# Get inner sample bounds
+		s1 = Int(round(y1, RoundUp))
+		s2 = Int(round(y2, RoundDown))
+		# println("Sample b: ", s1, " ", s2, " ")
+
+		# Get inner sample bound coordinates
+		r1 = mapRange(1.0, R(n), a, b, R(s1))
+		r2 = mapRange(1.0, R(n), a, b, R(s2))
+
+		# Bounds within same sample bin
+		if s1 > s2
+			f1 = f.coeffs[s2]
+			f2 = f.coeffs[s2 + 1]
+			dx1 = x1 - r2
+			dx2 = x2 - x1
+			dx3 = r1 - x2
+			m = (f2 - f1)/h
+			u = f1 + m*dx1
+			v = f2 - m*dx3
+			A = trap(dx2, u, v)
+			# println("Intra A: ", A)
+			s += A
+		# Bounds in different sample bins (typical case)
+		else
+			# First partial bin
+			if s1 > 1 && s1 <= n
+				f1 = f.coeffs[s1 - 1]
+				f2 = f.coeffs[s1]
+				dx1 = x1 - r1 + h
+				dx2 = r1 - x1
+				m = (f2 - f1)/h
+				u = f1 + m*dx1
+				A = trap(dx2, u, f2)
+				# println("First A: ", A)
+				s += A
+			end
+			# Full bins
+			for i in s1:s2
+				# weight of each basis function
+				# boundary basis functions have half contribution
+				w = (i == s1 || i == s2 ? R(1//2) : R(1))
+				s += w * h * f.coeffs[i]
+			end
+			# Last partial bin
+			if s2 < n && s1 >= 1
+				f3 = f.coeffs[s2]
+				f4 = f.coeffs[s2 + 1]
+				dx3 = x2 - r2
+				dx4 = r2 + h - x2
+				m = (f4 - f3)/h
+				v = f4 - m*dx4
+				A = trap(dx3, f3, v)
+				# println("Last A: ", A)
+				s += A
+			end
+		end
+		s
+	end
 end
 
 #
