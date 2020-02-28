@@ -1,4 +1,34 @@
 """
+Evaluate the unique affine map between the given intervals at the given
+point.
+
+[a1, b1] : Old interval
+[a2, b2] : New interval
+x : Old point
+-> : New point
+"""
+function mapRange(a1, b1, a2, b2, x)
+	(x - a1)*(b2 - a2)/(b1 - a1) + a2
+end
+
+"""
+Clamp the given point to the given interval.
+
+If x < a, a
+Elseif x > b, b
+Else, x
+"""
+function clamp(a, b, x)
+	if x < a
+		a
+	elseif x > b
+		b
+	else
+		x
+	end
+end
+
+"""
 Return [e, f(e), ..., f^{n-1}(e)].
 """
 function accum(f, e::T, n::Int)::Vector{T} where {T}
