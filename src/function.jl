@@ -87,10 +87,10 @@ function hat(a::R, b::R, n::Int, i::Int, x::R)::R where {R}
 	elseif !(a <= x <= b)
 		throw(DomainError(x, "Hat basis function evaluation out of bounds."))
 	else
-		h = 1 / R(n - 1)
-		xip = h * (i - 1)
-		xi  = h * i
-		xin = h * (i + 1)
+		h = (b - a) / R(n - 1)
+		xip = a + h * (i - 1)
+		xi  = a + h * i
+		xin = a + h * (i + 1)
 		if x <= xip
 			return R(0)
 		elseif x <= xi
