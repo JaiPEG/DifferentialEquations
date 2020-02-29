@@ -68,6 +68,37 @@ function Base.:*(c::R, f::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
 end
 
 #
+# Algebra
+#
+
+"""
+Return the multiplicative identity of the algebra Hat{R, a, b, n}.
+"""
+function oneHat(a::R, b::R, n::Int)::Hat{R, a, b, n} where {R}
+	Hat{R, a, b, n}(ones(n))
+end
+
+"""
+Return the multiplicative identity of the algebra Hat{R, a, b, n} using the
+interval size and number of samples from the given element.
+"""
+function oneHat(f::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
+	Hat{R, a, b, n}(ones(n))
+end
+
+function Base.:*(f::Hat{R, a, b, n}, g::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
+	tmp = Vector{R}(undef, n)
+	for i in 1:n
+		tmp[i] = f.coeffs[i]*g.coeffs[i]
+	end
+	Hat{R, a, b, n}(tmp)
+end
+
+function Base.:^(f::Hat{R, a, b, n}, m::Int)::Hat{R, a, b, n} where {R, a, b, n}
+	pow((*), oneHat(f), f, m)
+end
+
+#
 # Projection
 #
 
