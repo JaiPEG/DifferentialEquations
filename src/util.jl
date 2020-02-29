@@ -59,3 +59,49 @@ function apply(f, e::T, n::Int)::T where {T}
 		ret
 	end
 end
+
+"""
+Return the binary representation of an integer as a vector of integers from
+0 to 1 where the first element of the vector is the least significant bit.
+"""
+function binaryLSB(n::Int)::Vector{Int}
+	if n < 0
+		throw(DomainError(n, "Negative input."))
+	elseif n == 0
+		Int[]
+	else
+		q, r = divrem(n, 2)
+		vcat([r], binaryLSB(q))
+	end
+end
+
+"""
+Return the binary representation of an integer as a vector of integers from
+0 to 1 where the first element of the vector is the most significant bit.
+"""
+function binaryMSB(n::Int)::Vector{Int}
+	reverse(binaryLSB(n))
+end
+
+"""
+Return the binary representation of an integer as a vector of integers from
+0 to 1. Alias to binaryMSB.
+"""
+binary = binaryMSB
+
+"""
+Fast powering algorithm for any associative binary operation f with identity
+e.
+"""
+function pow(f, e::T, x::T, n::Int)::T where {T}
+	# fast powering algorithm
+	mask = binaryLSB(n)
+	squares = accum(x -> f(x, x), x, length(mask))
+	ret = e
+	for (bit, square) in zip(mask, squares)
+		if bit == 1
+			ret = f(ret, square)
+		end
+	end
+	ret
+end
