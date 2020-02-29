@@ -36,6 +36,21 @@ end
 # Vector space
 #
 
+"""
+Return the identity of the vector space Hat{R, a, b, n}.
+"""
+function zeroHat(a::R, b::R, n::Int)::Hat{R, a, b, n} where {R}
+	Hat{R, a, b, n}(zeros(n))
+end
+
+"""
+Return the identity of the vector space Hat{R, a, b, n} using the
+interval size and number of samples from the given element.
+"""
+function zeroHat(f::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
+	Hat{R, a, b, n}(zeros(n))
+end
+
 function Base.:+(f::Hat{R, a, b, n}, g::Hat{R, a, b, n})::Hat{R, a, b, n} where {R, a, b, n}
 	Hat{R, a, b, n}(f.coeffs + g.coeffs)
 end
