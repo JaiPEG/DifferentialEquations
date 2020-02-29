@@ -238,7 +238,7 @@ Compute the L2 norm of a function in the hat basis representation.
 """
 function normL2(f::Hat{R, a, b, n}) where {R, a, b, n}
 	fabs2 = Hat{R, a, b, n}([abs2(c) for c in f.coeffs])
-	sqrt(quadrature(fabs2))
+	sqrt(quad(fabs2))
 end
 
 #
