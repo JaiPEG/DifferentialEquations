@@ -152,7 +152,6 @@ function quad(f::Hat{R, a, b, n}, x1::R, x2::R)::R where {R, a, b, n}
 	else
 		# println("Bounds: ", x1, " ", x2)
 		h = (b - a) / (n - 1)
-		s = R(0)
 
 		function trap(height, base1, base2)
 			0.5*height*(base1 + base2)
@@ -184,10 +183,11 @@ function quad(f::Hat{R, a, b, n}, x1::R, x2::R)::R where {R, a, b, n}
 			v = f2 - m*dx3
 			A = trap(dx2, u, v)
 			# println("Intra A: ", A)
-			s += A
+			A
 		# Bounds in different sample bins (typical case)
 		else
 			# First partial bin
+			A1 = R(0)
 			if s1 > 1 && s1 <= n
 				f1 = f.coeffs[s1 - 1]
 				f2 = f.coeffs[s1]
@@ -195,18 +195,23 @@ function quad(f::Hat{R, a, b, n}, x1::R, x2::R)::R where {R, a, b, n}
 				dx2 = r1 - x1
 				m = (f2 - f1)/h
 				u = f1 + m*dx1
-				A = trap(dx2, u, f2)
-				# println("First A: ", A)
-				s += A
+				A1 = trap(dx2, u, f2)
 			end
 			# Full bins
-			for i in s1:s2
-				# weight of each basis function
-				# boundary basis functions have half contribution
-				w = (i == s1 || i == s2 ? R(1//2) : R(1))
-				s += w * h * f.coeffs[i]
+			A2 = R(0)
+			if s1 == s2
+				# 0 bins => 0 evals
+			else
+				# s2 - s1 bins => s2 - s1 + 1 evals
+				for i in s1:s2
+					# weight of each basis function
+					# boundary basis functions have half contribution
+					w = (i == s1 || i == s2 ? R(1//2) : R(1))
+					A2 += w * h * f.coeffs[i]
+				end
 			end
 			# Last partial bin
+			A3 = R(0)
 			if s2 < n && s1 >= 1
 				f3 = f.coeffs[s2]
 				f4 = f.coeffs[s2 + 1]
@@ -214,12 +219,13 @@ function quad(f::Hat{R, a, b, n}, x1::R, x2::R)::R where {R, a, b, n}
 				dx4 = r2 + h - x2
 				m = (f4 - f3)/h
 				v = f4 - m*dx4
-				A = trap(dx3, f3, v)
-				# println("Last A: ", A)
-				s += A
+				A3 = trap(dx3, f3, v)
 			end
+			# println("First A:  ", A1)
+			# println("Middle A: ", A2)
+			# println("Last A:   ", A3)
+			A1 + A2 + A3
 		end
-		s
 	end
 end
 
