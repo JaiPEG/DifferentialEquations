@@ -7,7 +7,7 @@ point.
 x : Old point
 -> : New point
 """
-function mapRange(a1, b1, a2, b2, x)
+function mapRange(a1::T, b1::T, a2::T, b2::T, x::T)::T where {T}
 	(x - a1)*(b2 - a2)/(b1 - a1) + a2
 end
 
@@ -18,7 +18,7 @@ If x < a, a
 Elseif x > b, b
 Else, x
 """
-function clamp(a, b, x)
+function clamp(a::T, b::T, x::T)::T where {T}
 	if x < a
 		a
 	elseif x > b
