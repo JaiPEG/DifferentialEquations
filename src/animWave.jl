@@ -39,7 +39,7 @@ xs = [i for i in range(a, b, length=1000)]
 for frame in 1:frames
 	# TODO: Inefficient since simulating from s0 everytime
 	k = frameToSteps(frame)
-	fx = apply(s -> waveD0(rk2, s, 0.1*h), s0, k)[2]
+	fx = apply(s -> waveD0(rk2, s, ht), s0, k)[2]
 	f = x -> quad(fx, a, x)
 	p = plot(x=xs, y=[f(x) for x in xs], Geom.line,
 		Scale.x_continuous(minvalue=a, maxvalue=b),
