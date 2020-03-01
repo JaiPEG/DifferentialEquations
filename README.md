@@ -6,9 +6,11 @@ course at Perimeter Institute.
 
 ## Animating a wave function
 
-An example program included in this project generates plots of an evolving wave function and saves them as SVG files under output/animWave/. In order to run this program, ensure that the Julia package Gadfly is installed on your system, set your working directory to the project directory, and then type at the commandline,
+An example program included in this project that generates plots of an evolving wave function and saves them as SVG files under output/animWave/.
 
-    julia --project=@. src/animWave.jl
+In order to run this program, ensure that the Julia package Gadfly is installed on your system, set your working directory to the project directory, and then type at the commandline,
+
+    julia src/animWave.jl
 
 If you have ImageMagick and FFmpeg installed on your system, you can use the following script to generate a video file from these plots, saved to output/animWave/vid.mp4.
 
