@@ -18,6 +18,8 @@ If you have ImageMagick and FFmpeg installed on your system, you can use the fol
 
 An example plot and video file is included in the project repository.
 
+![alt text](https://github.com/JaiPEG/DifferentialEquations/raw/master/output/animWave/frame-0240.svg "Frame 240 of wave animation")
+
 ## Plotting the energy over time at various resolutions
 
 An example program included in this project generates a plot of the energy over time of evolving wave functions at several (spacial) resolutions; the time-step is also decreased in order to have good conditioning. The plot is saved as an SVG file under output/plotEnergy/.
@@ -27,3 +29,5 @@ In order to run this program, ensure that the Julia package Gadfly is installed 
     julia src/plotEnergy.jl
 
 An example plot is included in the project repository. Notice that as the number of samples increase (the resolution decreases), the energy changes less and less over the time interval, demonstrating convergence.
+
+![alt text](https://github.com/JaiPEG/DifferentialEquations/raw/master/output/plotEnergy/energy.svg "Energy change over time at various resolutions")
