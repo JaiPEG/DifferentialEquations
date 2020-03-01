@@ -16,7 +16,7 @@ If you have ImageMagick and FFmpeg installed on your system, you can use the fol
 
     ./vid.sh
 
-An example video file is included in the project repository.
+An example plot and video file is included in the project repository.
 
 ## Plotting the energy over time at various resolutions
 
