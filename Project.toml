@@ -1,4 +1,4 @@
 name = "DifferentialEquations"
 uuid = "78cadf16-ea3e-4a23-a25a-f9c9ee44e439"
 authors = ["Cristian Ardelean <cristian97.ardelean@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
